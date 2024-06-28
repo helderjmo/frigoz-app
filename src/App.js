@@ -9,6 +9,7 @@ function App() {
   const goToIngSelection = () => {
     setHideLogo(true)
   }
+  const [recipes, setRecipes] = useState();
 
   const [rows, setRows] = useState([{ name: '', amount: '' }]);
 
@@ -40,7 +41,8 @@ function App() {
         console.log('Network response was not ok');
       }
 
-      const responseData = response.json();
+      const responseData = response.recipes
+      setRecipes(responseData)
       console.log(responseData)
     } catch (error) {
       console.error('Error creating post:', error);
@@ -97,15 +99,24 @@ function App() {
         
         <button onClick={search}>I'm hungry, give me some recipes</button>
 
-          </div>
-          
+          </div>         
 
           {
-  showResults && <div className="beautify-container">
-  <p>This is some beautifully styled text!</p>
-  <p>You can add more paragraphs, headers, or any other text content here.</p>
-</div>
-}
+            showResults && <>
+
+{recipes.map((subArray, index) => (
+            <div className="beautify-container" key={index}>
+              <h1>{subArray.description}</h1>
+              {subArray.ingredients.map((item, subIndex) => (
+                <p key={subIndex}>{item.name}</p>
+              ))}
+            </div>
+          ))}
+
+
+
+              </>
+          }
         </div>
       }
 
